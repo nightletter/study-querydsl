@@ -2,7 +2,9 @@ package me.nightletter.studyquerydsl;
 
 import me.nightletter.studyquerydsl.domain.Car;
 import me.nightletter.studyquerydsl.domain.Owner;
+import me.nightletter.studyquerydsl.dto.MultiInRequest;
 import me.nightletter.studyquerydsl.dto.OwnerCar;
+import me.nightletter.studyquerydsl.dto.OwnerResponse;
 import me.nightletter.studyquerydsl.repository.CarRepository;
 import me.nightletter.studyquerydsl.repository.OwnerRepository;
 import me.nightletter.studyquerydsl.repository.Query;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,6 +65,24 @@ class StudyQuerydslApplicationTests {
 	@Test
 	void exist() {
 		assertEquals(query.exist(1L), 1L);
+	}
+
+	@Test
+	void multiIn() {
+		List<MultiInRequest> multiInRequest = new ArrayList<>();
+		multiInRequest.add(new MultiInRequest(1L,"포르쉐"));
+		multiInRequest.add(new MultiInRequest(2L,"마세라티"));
+
+
+		for (Car o : query.multiIn(multiInRequest)) {
+			System.out.println(o);
+		}
+	}
+
+	@Test
+	void paramIdNotinProjection() {
+		OwnerResponse ownerResponse = query.paramIdNotinProjection(1L);
+		System.out.println(ownerResponse);
 	}
 
 	@Test
